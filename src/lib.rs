@@ -21,7 +21,9 @@
 
 extern crate chomp_nl;
 
+use std::error;
 use std::ffi::OsStr;
+use std::fmt::{self, Display, Formatter};
 use std::io::{self, Write};
 use std::process::{Command, Stdio};
 use std::string;
@@ -56,6 +58,30 @@ impl From<io::Error> for Error {
 impl From<string::FromUtf8Error> for Error {
     fn from(error: string::FromUtf8Error) -> Self {
         FromUtf8(error)
+    }
+}
+
+impl Display for Error {
+    fn fmt(&self, formatter: &mut Formatter) -> fmt::Result {
+        let string =
+            match *self {
+                FromUtf8(ref error) => error.to_string(),
+                Io(ref error) => error.to_string(),
+                InvalidInput => "invalid input".to_string(),
+                Pass(ref error) => error.clone(),
+            };
+        write!(formatter, "{}", string)
+    }
+}
+
+impl error::Error for Error {
+    fn description(&self) -> &str {
+        match *self {
+            FromUtf8(ref error) => error.description(),
+            Io(ref error) => error.description(),
+            InvalidInput => "invalid input",
+            Pass(ref error) => error,
+        }
     }
 }
 
