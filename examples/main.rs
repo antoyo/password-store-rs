@@ -27,5 +27,7 @@ fn main() {
     PasswordStore::insert("test with spaces/pass with spaces", "password").unwrap();
     let password = PasswordStore::get("test with spaces/pass with spaces");
     println!("{:?}", password);
+    let usernames = PasswordStore::get_usernames("test with spaces").unwrap();
+    println!("{:?}", usernames);
     PasswordStore::remove("test with spaces/pass with spaces").unwrap();
 }
