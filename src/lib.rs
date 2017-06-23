@@ -19,7 +19,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-extern crate chomp_nl;
+mod chomp;
 
 use std::error;
 use std::ffi::OsStr;
@@ -28,9 +28,8 @@ use std::io::{self, Write};
 use std::process::{Command, Stdio};
 use std::string;
 
-use chomp_nl::ChompInPlace;
-
 use Error::*;
+use chomp::Chomp;
 
 macro_rules! validate_path {
     ($path:expr) => {
