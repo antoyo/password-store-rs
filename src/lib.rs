@@ -102,7 +102,7 @@ impl PasswordStore {
     /// Get the list of usernames at the specified `path`.
     pub fn get_usernames(path: &str) -> Result<Vec<String>> {
         validate_path!(path);
-        let output = exec_pass("", &[format!("{}/", path)], None)?;
+        let output = exec_pass("", &[path], None)?;
         let mut usernames = vec![];
         // Skip the first line since it is the path.
         for line in output.lines().skip(1) {
