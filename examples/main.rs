@@ -24,10 +24,31 @@ extern crate password_store;
 use password_store::PasswordStore;
 
 fn main() {
+    PasswordStore::insert("pass", "password").unwrap();
+    let password = PasswordStore::get("pass");
+    println!("Password: {:?}", password);
+    let usernames = PasswordStore::get_usernames("pass").unwrap();
+    println!("Usernames: {:?}", usernames);
+    PasswordStore::remove("pass").unwrap();
+
+    PasswordStore::insert("test/pass", "password").unwrap();
+    let password = PasswordStore::get("test/pass");
+    println!("Password: {:?}", password);
+    let usernames = PasswordStore::get_usernames("test/pass").unwrap();
+    println!("Usernames: {:?}", usernames);
+    PasswordStore::remove("test/pass").unwrap();
+
     PasswordStore::insert("test with spaces/pass with spaces", "password").unwrap();
     let password = PasswordStore::get("test with spaces/pass with spaces");
     println!("{:?}", password);
     let usernames = PasswordStore::get_usernames("test with spaces").unwrap();
     println!("{:?}", usernames);
     PasswordStore::remove("test with spaces/pass with spaces").unwrap();
+
+    PasswordStore::generate("pass", true, 25).unwrap();
+    let password = PasswordStore::get("pass");
+    println!("Password: {:?}", password);
+    let usernames = PasswordStore::get_usernames("pass").unwrap();
+    println!("Usernames: {:?}", usernames);
+    PasswordStore::remove("pass").unwrap();
 }
