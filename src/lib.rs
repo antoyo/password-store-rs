@@ -120,15 +120,20 @@ pub type Result<T> = std::result::Result<T, Error>;
 pub struct PasswordStore;
 
 impl PasswordStore {
-    /// Get the password a the specified `path`.
-    pub fn get(path: &str) -> Result<String> {
+    /// Get the username and password a the specified `path`.
+    pub fn get(path: &str) -> Result<(String, String)> {
         validate_path!(path);
         let mut response = gopass_ipc(object! {
             "type" => "getLogin",
             "entry" => path
         })?;
-        if let Some(password) = response["password"].take_string() {
-            Ok(password)
+        if let (Some(mut username), Some(password)) = (response["username"].take_string(),
+            response["password"].take_string())
+        {
+            if username.is_empty() {
+                username = path.to_string();
+            }
+            Ok((username, password))
         }
         else {
             Err(InvalidOutput)
