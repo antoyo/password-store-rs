@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Boucher, Antoni <bouanto@zoho.com>
+ * Copyright (c) 2016-2020 Boucher, Antoni <bouanto@zoho.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -230,8 +230,8 @@ fn exec_pass<S: AsRef<OsStr>>(command: &str, args: &[S]) -> Result<String> {
 
 /// Query the `gopass` process with a `json_query`.
 fn gopass_ipc(json_query: JsonValue) -> Result<JsonValue> {
-    let mut process = Command::new("gopass");
-    let mut child = process.args(&["jsonapi", "listen"])
+    let mut process = Command::new("gopass-jsonapi");
+    let mut child = process.args(&["listen"])
         .stderr(Stdio::piped())
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
